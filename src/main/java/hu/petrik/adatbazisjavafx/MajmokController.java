@@ -1,10 +1,9 @@
 package hu.petrik.adatbazisjavafx;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
@@ -21,11 +20,20 @@ public class MajmokController {
     @FXML
     private TableColumn<Majom, String> szereti_banantOszlop;
     private MajomDB db;
+    @FXML
+    private TextField fajtaInput;
+    @FXML
+    private Spinner<Integer> max_iqInput;
+    @FXML
+    private CheckBox szereti_banantCheckbox;
+    @FXML
+    private Button elkuldButton;
 
     public void initialize() {
         fajtaOszlop.setCellValueFactory(new PropertyValueFactory<>("fajta"));
         max_iqOszlop.setCellValueFactory(new PropertyValueFactory<>("max_iq"));
         szereti_banantOszlop.setCellValueFactory(new PropertyValueFactory<>("szereti_banantDisplay"));
+        max_iqInput.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,255, 50));
         Platform.runLater(() -> {
             try {
                 db = new MajomDB();
@@ -48,5 +56,9 @@ public class MajmokController {
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
         alert.showAndWait();
+    }
+
+    @FXML
+    public void elkuldClick(ActionEvent actionEvent) {
     }
 }
