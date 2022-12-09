@@ -51,6 +51,14 @@ public class Majom {
         this.szereti_banant = szereti_banant;
     }
 
+    public String getSzereti_banantDisplay() {
+        String display = "";
+        if (this.isSzereti_banant()) {
+            display = "X";
+        }
+        return display;
+    }
+
     @Override
     public String toString() {
         return "Majom{" +
