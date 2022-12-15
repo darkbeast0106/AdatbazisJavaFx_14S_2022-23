@@ -8,6 +8,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class MajmokController {
 
@@ -55,11 +56,11 @@ public class MajmokController {
         majmokTablazat.getItems().addAll(majmok);
     }
 
-    private void alert(Alert.AlertType alertType, String headerText, String contentText) {
+    private Optional<ButtonType> alert(Alert.AlertType alertType, String headerText, String contentText) {
         Alert alert = new Alert(alertType);
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
-        alert.showAndWait();
+        return alert.showAndWait();
     }
 
     @FXML
@@ -98,5 +99,30 @@ public class MajmokController {
 
     @FXML
     public void torlesClick(ActionEvent actionEvent) {
+        int selectedIndex = majmokTablazat.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            alert(Alert.AlertType.WARNING, "Előbb válasszon a táblázatból", "");
+            return;
+        }
+        Majom kivalasztottMajom = majmokTablazat.getSelectionModel().getSelectedItem();
+
+        Optional<ButtonType> felhasznaloValasztasa = alert(Alert.AlertType.CONFIRMATION,
+                "Biztos szeretné törölni az alábbi majmot?", kivalasztottMajom.getFajta());
+        if (felhasznaloValasztasa.isEmpty() ||
+                (!felhasznaloValasztasa.get().equals(ButtonType.OK) &&
+                !felhasznaloValasztasa.get().equals(ButtonType.YES) )) {
+            return;
+        }
+
+        try {
+            if (db.majomTorlese(kivalasztottMajom)) {
+                alert(Alert.AlertType.WARNING, "Sikeres törlés", "");
+            } else {
+                alert(Alert.AlertType.WARNING, "Sikertelen törlés", "");
+            }
+            majmokListazasa();
+        } catch (SQLException e) {
+            alert(Alert.AlertType.ERROR, "Adatbazis hiba", e.getMessage());
+        }
     }
 }

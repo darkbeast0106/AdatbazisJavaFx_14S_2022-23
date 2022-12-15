@@ -48,4 +48,11 @@ public class MajomDB {
         stmt.setBoolean(3, majom.isSzereti_banant());
         stmt.execute();
     }
+
+    public boolean majomTorlese(Majom majom) throws SQLException {
+        String sql = "DELETE FROM majmok WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, majom.getId());
+        return stmt.executeUpdate() > 0;
+    }
 }
