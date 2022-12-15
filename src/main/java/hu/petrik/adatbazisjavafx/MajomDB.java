@@ -55,4 +55,19 @@ public class MajomDB {
         stmt.setInt(1, majom.getId());
         return stmt.executeUpdate() > 0;
     }
+
+    public boolean majomModositasa(Majom majom) throws SQLException {
+        String sql = "UPDATE majmok SET " +
+                "fajta = ?, " +
+                "max_iq = ?, " +
+                "szereti_banant = ? " +
+                "WHERE id = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, majom.getFajta());
+        stmt.setInt(2, majom.getMax_iq());
+        stmt.setBoolean(3, majom.isSzereti_banant());
+        stmt.setInt(4, majom.getId());
+        return stmt.executeUpdate() > 0;
+
+    }
 }

@@ -33,6 +33,9 @@ public class MajmokController {
     private Button modositButton;
     @FXML
     private Button torlesButton;
+    private int kivalasztottMajomId;
+    @FXML
+    private Button megseButton;
 
     public void initialize() {
         fajtaOszlop.setCellValueFactory(new PropertyValueFactory<>("fajta"));
@@ -72,10 +75,20 @@ public class MajmokController {
             alert(Alert.AlertType.WARNING, "Fajta megadása kötelező", "");
             return;
         }
-        Majom majom = new Majom(fajta, max_iq, szereti_banant);
+
         try {
-            db.majomHozzaadasa(majom);
-            alert(Alert.AlertType.WARNING, "Sikeres felvétel", "");
+            if (elkuldButton.getText().equals("Elküld")) {
+                Majom majom = new Majom(fajta, max_iq, szereti_banant);
+                db.majomHozzaadasa(majom);
+                alert(Alert.AlertType.WARNING, "Sikeres felvétel", "");
+            } else {
+                Majom majom = new Majom(kivalasztottMajomId, fajta, max_iq, szereti_banant);
+                if (db.majomModositasa(majom)) {
+                    alert(Alert.AlertType.WARNING, "Sikeres módosítás", "");
+                } else {
+                    alert(Alert.AlertType.WARNING, "Sikertelen módosítás", "");
+                }
+            }
             majmokListazasa();
             urlapAlaphelyzetbe();
         } catch (SQLException e) {
@@ -91,20 +104,32 @@ public class MajmokController {
         fajtaInput.setText("");
         max_iqInput.getValueFactory().setValue(50);
         szereti_banantCheckbox.setSelected(false);
+        elkuldButton.setText("Elküld");
+
+        majmokTablazat.setDisable(false);
+        modositButton.setDisable(false);
+        torlesButton.setDisable(false);
     }
 
     @FXML
     public void modositClick(ActionEvent actionEvent) {
+        Majom kivalasztottMajom = getKivalasztottMajom();
+        if (kivalasztottMajom == null) return;
+
+        kivalasztottMajomId = kivalasztottMajom.getId();
+        fajtaInput.setText(kivalasztottMajom.getFajta());
+        max_iqInput.getValueFactory().setValue(kivalasztottMajom.getMax_iq());
+        szereti_banantCheckbox.setSelected(kivalasztottMajom.isSzereti_banant());
+        elkuldButton.setText("Módosít");
+        majmokTablazat.setDisable(true);
+        modositButton.setDisable(true);
+        torlesButton.setDisable(true);
     }
 
     @FXML
     public void torlesClick(ActionEvent actionEvent) {
-        int selectedIndex = majmokTablazat.getSelectionModel().getSelectedIndex();
-        if (selectedIndex == -1) {
-            alert(Alert.AlertType.WARNING, "Előbb válasszon a táblázatból", "");
-            return;
-        }
-        Majom kivalasztottMajom = majmokTablazat.getSelectionModel().getSelectedItem();
+        Majom kivalasztottMajom = getKivalasztottMajom();
+        if (kivalasztottMajom == null) return;
 
         Optional<ButtonType> felhasznaloValasztasa = alert(Alert.AlertType.CONFIRMATION,
                 "Biztos szeretné törölni az alábbi majmot?", kivalasztottMajom.getFajta());
@@ -124,5 +149,19 @@ public class MajmokController {
         } catch (SQLException e) {
             alert(Alert.AlertType.ERROR, "Adatbazis hiba", e.getMessage());
         }
+    }
+
+    private Majom getKivalasztottMajom() {
+        int selectedIndex = majmokTablazat.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            alert(Alert.AlertType.WARNING, "Előbb válasszon a táblázatból", "");
+            return null;
+        }
+        return majmokTablazat.getSelectionModel().getSelectedItem();
+    }
+
+    @FXML
+    public void megseClick(ActionEvent actionEvent) {
+        urlapAlaphelyzetbe();
     }
 }
