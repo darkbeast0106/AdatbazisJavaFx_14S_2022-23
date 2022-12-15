@@ -31,18 +31,25 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
           <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
           <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
           <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
             <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
         </rowConstraints>
          <children>
-            <Label text="Fajta: " />
-            <Label text="Max IQ: " GridPane.rowIndex="1" />
-            <TextField fx:id="fajtaInput" GridPane.columnIndex="1" />
-            <Spinner fx:id="max_iqInput" prefWidth="100000.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <CheckBox fx:id="szereti_banantCheckbox" mnemonicParsing="false" text="Szereti a banánt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="elkuldButton" mnemonicParsing="false" onAction="#elkuldClick" prefWidth="100000.0" text="Elküld" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <Label text="Fajta: " GridPane.rowIndex="1" />
+            <Label text="Max IQ: " GridPane.rowIndex="2" />
+            <TextField fx:id="fajtaInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Spinner fx:id="max_iqInput" prefWidth="100000.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <CheckBox fx:id="szereti_banantCheckbox" mnemonicParsing="false" text="Szereti a banánt" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button fx:id="elkuldButton" mnemonicParsing="false" onAction="#elkuldClick" prefWidth="100000.0" text="Elküld" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <HBox spacing="10.0" GridPane.columnSpan="2">
+               <children>
+                  <Button fx:id="modositButton" mnemonicParsing="false" onAction="#modositClick" text="Módosítás" />
+                  <Button fx:id="torlesButton" mnemonicParsing="false" onAction="#torlesClick" text="Törlés" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
    </children>

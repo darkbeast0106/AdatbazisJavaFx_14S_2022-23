@@ -28,6 +28,10 @@ public class MajmokController {
     private CheckBox szereti_banantCheckbox;
     @FXML
     private Button elkuldButton;
+    @FXML
+    private Button modositButton;
+    @FXML
+    private Button torlesButton;
 
     public void initialize() {
         fajtaOszlop.setCellValueFactory(new PropertyValueFactory<>("fajta"));
@@ -86,5 +90,13 @@ public class MajmokController {
         fajtaInput.setText("");
         max_iqInput.getValueFactory().setValue(50);
         szereti_banantCheckbox.setSelected(false);
+    }
+
+    @FXML
+    public void modositClick(ActionEvent actionEvent) {
+    }
+
+    @FXML
+    public void torlesClick(ActionEvent actionEvent) {
     }
 }
